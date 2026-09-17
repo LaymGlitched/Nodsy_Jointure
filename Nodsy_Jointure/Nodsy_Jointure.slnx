@@ -1,4 +1,6 @@
 ﻿<Solution>
+  <Project Path="Nodsy.Jointure.csproj" />
   <Project Path="Assembly-CSharp-Editor.csproj" />
   <Project Path="Assembly-CSharp.csproj" />
+  <Project Path="Nodsy.Jointure.Editor.csproj" />
 </Solution>

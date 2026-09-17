@@ -1,0 +1,18 @@
+{
+    "name": "Nodsy.Jointure.Editor",
+    "rootNamespace": "Jointure.Editor",
+    "references": [
+        "GUID:303e84476c52562438a4cea31bf9b794"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
