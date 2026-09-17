@@ -1,3 +1,7 @@
+<p align="center">
+  <img src=".github/media/Jointure_Logo.jpg" alt="Jointure Logo" width="100%">
+</p>
+
 # Nodsy_Jointure
 
 **A full-body physics interaction system inspired by Boneworks/Bonelab.**
