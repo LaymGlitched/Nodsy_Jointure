@@ -19,6 +19,13 @@ namespace Jointure
 
         private LayerMask _mask;
 
+        [Header("Foot Rotation Offsets")]
+        public Vector3 LeftFootRotationOffset = Vector3.zero;
+        public Vector3 RightFootRotationOffset = Vector3.zero;
+
+        private Transform _leftLegTarget, _rightLegTarget;
+        private Quaternion _baseLeftTargetRot = Quaternion.identity, _baseRightTargetRot = Quaternion.identity;
+
         private void Awake()
         {
             _player = GetComponentInParent<Player>();
@@ -31,10 +38,26 @@ namespace Jointure
             _currentFoot = _rightFoot;
             _pelvisRigidbody = _player.PhysicsRig.PelvisRigidbody;
             _mask = ~LayerMask.GetMask("JointureRig");
+
+            if (_player.AnimationRig.LeftFootAnchorTransform != null)
+            {
+                _leftLegTarget = _player.AnimationRig.LeftFootAnchorTransform.Find("LeftLegTarget");
+                if (_leftLegTarget != null) _baseLeftTargetRot = _leftLegTarget.localRotation;
+            }
+            if (_player.AnimationRig.RightFootAnchorTransform != null)
+            {
+                _rightLegTarget = _player.AnimationRig.RightFootAnchorTransform.Find("RightLegTarget");
+                if (_rightLegTarget != null) _baseRightTargetRot = _rightLegTarget.localRotation;
+            }
         }
 
         private void Update()
         {
+            if (_leftLegTarget != null)
+                _leftLegTarget.localRotation = _baseLeftTargetRot * Quaternion.Euler(LeftFootRotationOffset);
+            if (_rightLegTarget != null)
+                _rightLegTarget.localRotation = _baseRightTargetRot * Quaternion.Euler(RightFootRotationOffset);
+
             Component groundBody = _player.PhysicsRig.LocomotionSphere.GroundBody;
             _groundVelocity = Vector3.zero;
 

@@ -46,7 +46,8 @@ namespace Jointure
         private Grab GetChosenGrab()
         {
             Collider[] grabColliders = Physics.OverlapBox(_grabBounds.position, _grabBounds.localScale / 2, _grabBounds.rotation, Physics.AllLayers, QueryTriggerInteraction.Collide); //Get all grabs in the grab bounds
-            float highestRank = 0;
+            int highestPriority = int.MinValue;
+            float highestRank = 0f;
             Grab highestRankGrab = null;
 
             foreach (Collider grabCollider in grabColliders) //Loop through found grab colliders to find grab with highest rank
@@ -62,16 +63,39 @@ namespace Jointure
                 if (!grab.enabled)
                     continue;
 
-                if (!grab || !(grab.IsLeftHanded && _hand.IsLeftHand || grab.IsRightHanded && !_hand.IsLeftHand)) //If grab exists and is for the appropriate hand
+                if (!(grab.IsLeftHanded && _hand.IsLeftHand || grab.IsRightHanded && !_hand.IsLeftHand)) //If grab exists and is for the appropriate hand
                     continue;
+
+                if (grab.Priority < highestPriority)
+                    continue;
+
+                if (grab.MaxGrabDistance > 0f)
+                {
+                    Collider col = grab.Collider ? grab.Collider : grab.GetComponent<Collider>();
+                    if (col)
+                    {
+                        float dist = Vector3.Distance(_hand.PalmTransform.position, col.ClosestPoint(_hand.PalmTransform.position));
+                        if (dist > grab.MaxGrabDistance)
+                            continue;
+                    }
+                }
 
                 float grabRank = grab.EvaluateGrabRank(_hand.PalmTransform);
 
-                if (grabRank <= highestRank || grabRank <= 0f)
+                if (grabRank <= 0f)
                     continue;
 
-                highestRank = grabRank;
-                highestRankGrab = grab;
+                if (grab.Priority > highestPriority)
+                {
+                    highestPriority = grab.Priority;
+                    highestRank = grabRank;
+                    highestRankGrab = grab;
+                }
+                else if (grabRank > highestRank)
+                {
+                    highestRank = grabRank;
+                    highestRankGrab = grab;
+                }
             }
 
             return highestRankGrab; //Return the grab with the highest rank

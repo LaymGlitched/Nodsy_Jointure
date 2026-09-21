@@ -23,7 +23,14 @@ namespace Jointure
                 if (Physics.OverlapSphere(GetNearestPoint(handTransform.position), 0.01f, _mask, QueryTriggerInteraction.Ignore).Length > 0)
                     return 0f;
 
-            return 3f / Vector3.Distance(handTransform.position, GetNearestPoint(handTransform.position));
+            float distance = Vector3.Distance(handTransform.position, GetNearestPoint(handTransform.position));
+            if (distance <= 0.0001f)
+                distance = 0.0001f;
+
+            float dot = Vector3.Dot(handTransform.forward, transform.forward);
+            float orientationScore = Mathf.Clamp01((dot + 1f) * 0.5f);
+
+            return (3f / distance) * (0.1f + 0.9f * orientationScore);
         }
 
         public override float CalculateRank(Transform handTransform) => EvaluateGrabRank(handTransform);

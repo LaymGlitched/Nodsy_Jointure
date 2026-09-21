@@ -299,9 +299,15 @@ namespace Jointure
         }
         public void ToggleAnimation()
         {
-            bool visible = !_player.AnimationRig.CharacterTransform.GetComponentInChildren<SkinnedMeshRenderer>().enabled;
+            if (_player == null || _player.AnimationRig == null || _player.AnimationRig.CharacterTransform == null) return;
+            var smrs = _player.AnimationRig.CharacterTransform.GetComponentsInChildren<SkinnedMeshRenderer>();
+            if (smrs.Length == 0) return;
 
-            _player.AnimationRig.CharacterTransform.GetComponentInChildren<SkinnedMeshRenderer>().enabled = visible;
+            bool visible = !smrs[0].enabled;
+            foreach (var smr in smrs)
+            {
+                smr.enabled = visible;
+            }
 
             _toggleAnimationDisplay.text = visible ? "Hide animation rig" : "Show animation rig";
         }

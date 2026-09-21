@@ -7,7 +7,10 @@ namespace Jointure
     {
         public override float EvaluateGrabRank(Transform handTransform)
         {
-            return base.EvaluateGrabRank(handTransform) * 3f;
+            float baseRank = base.EvaluateGrabRank(handTransform) * 3f;
+            float dot = Vector3.Dot(handTransform.forward, transform.forward);
+            float orientationScore = Mathf.Clamp01((dot + 1f) * 0.5f);
+            return baseRank * (0.1f + 0.9f * orientationScore);
         }
 
         public override float CalculateRank(Transform handTransform) => EvaluateGrabRank(handTransform);

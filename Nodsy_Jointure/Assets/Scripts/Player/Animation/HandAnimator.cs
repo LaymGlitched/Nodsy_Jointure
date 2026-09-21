@@ -45,9 +45,17 @@ namespace Jointure
             UpdateHand();
         }
 
+        [Header("Rotation Tuning")]
+        public Vector3 HandRotationOffset = Vector3.zero;
+
         private void LateUpdate()
         {
-            _hand.SetPositionAndRotation(_handTarget.position, _handTarget.rotation);
+            Quaternion rot = _handTarget.rotation;
+            if (HandRotationOffset != Vector3.zero)
+            {
+                rot *= Quaternion.Euler(HandRotationOffset);
+            }
+            _hand.SetPositionAndRotation(_handTarget.position, rot);
         }
 
         private void UpdateCurls()

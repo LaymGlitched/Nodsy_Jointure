@@ -12,7 +12,22 @@ namespace Jointure
         public delegate void Release();
         public event Release ReleaseEvent;
         public bool IsLeftHanded = true, IsRightHanded = true;
-        public Grab[] EnableGrabs, DisableGrabs;
+        public Grab[] EnableGrabs = new Grab[0], DisableGrabs = new Grab[0];
+
+        public const int PriorityEnvironment = -10;
+        public const int PrioritySecondary = 5;
+        public const int PriorityDefault = 10;
+        public const int PriorityPrimary = 20;
+
+        [Header("Priority & Detection")]
+        [Tooltip("Priority tier for grabbing. Higher priority grabs take precedence over lower priority grabs within the grab bounds.\nSuggestions: Environment = -10, Secondary (slide/latches) = 5, Default/Props = 10, Primary Handles = 20")]
+        public int Priority = PriorityDefault;
+
+        [Tooltip("Optional maximum grab distance in meters from hand palm to grab collider. If > 0, grab will only be eligible if palm is within this distance (0 = no limit, uses grab bounds box).")]
+        public float MaxGrabDistance = 0f;
+
+        [Tooltip("Multiplier applied to the grab rank (reciprocal distance / orientation). Lower values make it grab 'less fast' / less eager.")]
+        public float RankMultiplier = 1f;
 
         private Rigidbody _rigidBody;
         private ArticulationBody _articulationBody;
@@ -23,6 +38,20 @@ namespace Jointure
 
         private void OnEnable()
         {
+            EnsureBody();
+
+            Collider = GetComponent<Collider>();
+            if (Collider)
+                return;
+
+            CreateCollider();
+        }
+
+        public void EnsureBody()
+        {
+            if (_body)
+                return;
+
             _body = Utilities.FindRigidBodyInHierarchy(transform, out _rigidBody, out _articulationBody);
             if (!_body)
             {
@@ -31,12 +60,6 @@ namespace Jointure
                 _rigidBody = rigidbody;
                 _body = _rigidBody.transform;
             }
-
-            Collider = GetComponent<Collider>();
-            if (Collider)
-                return;
-
-            CreateCollider();
         }
 
         public virtual void CreateCollider()
@@ -49,10 +72,20 @@ namespace Jointure
 
         public virtual float EvaluateGrabRank(Transform handTransform) //Returned when in player grab range
         {
-            if (Collider is MeshCollider)
-                return 1f/1000f;
+            if (!Collider)
+                Collider = GetComponent<Collider>();
 
-            return 1f / Vector3.Distance(handTransform.position, Collider.ClosestPoint(handTransform.position)); //Reciprocal of distance from hand to grab
+            if (!Collider)
+                return 0f;
+
+            if (Collider is MeshCollider)
+                return (1f / 1000f) * RankMultiplier;
+
+            float distance = Vector3.Distance(handTransform.position, Collider.ClosestPoint(handTransform.position));
+            if (distance <= 0.0001f)
+                return 10000f * RankMultiplier;
+
+            return (1f / distance) * RankMultiplier; //Reciprocal of distance from hand to grab
         }
 
         public virtual float CalculateRank(Transform handTransform) => EvaluateGrabRank(handTransform);
@@ -73,15 +106,21 @@ namespace Jointure
 
             IgnoreCollision(hand, true);
 
-            foreach (Grab grab in EnableGrabs)
+            if (EnableGrabs != null)
             {
-                if (grab)
-                    grab.enabled = true;
+                foreach (Grab grab in EnableGrabs)
+                {
+                    if (grab)
+                        grab.enabled = true;
+                }
             }
-            foreach (Grab grab in DisableGrabs)
+            if (DisableGrabs != null)
             {
-                if (grab)
-                    grab.enabled = false;
+                foreach (Grab grab in DisableGrabs)
+                {
+                    if (grab)
+                        grab.enabled = false;
+                }
             }
 
             GetComponent<Interactable>()?.OnGrab();
@@ -89,8 +128,20 @@ namespace Jointure
 
         public virtual void IgnoreCollision(Hand hand, bool ignore)
         {
-            foreach (Collider collider in _body.GetComponentsInChildren<Collider>())
-                Physics.IgnoreCollision(collider, hand.PhysicsHandCollider, ignore);
+            EnsureBody();
+            if (!hand || !hand.PhysicsHandTransform || !_body)
+                return;
+
+            Collider[] bodyColliders = _body.GetComponentsInChildren<Collider>();
+            Collider[] handColliders = hand.PhysicsHandTransform.GetComponentsInChildren<Collider>();
+
+            foreach (Collider collider in bodyColliders)
+            {
+                foreach (Collider handCollider in handColliders)
+                {
+                    Physics.IgnoreCollision(collider, handCollider, ignore);
+                }
+            }
         }
 
         public virtual void AlignHand(Hand hand) { }
@@ -98,7 +149,7 @@ namespace Jointure
         private void CreateGrabJoint(Hand hand)
         {
             FixedJoint grabJoint = hand.PhysicsHandTransform.gameObject.AddComponent<FixedJoint>();
-            grabJoint.enableCollision = true;
+            grabJoint.enableCollision = false;
             if (_rigidBody)
                 grabJoint.connectedBody = _rigidBody;
             if (_articulationBody)
@@ -114,15 +165,21 @@ namespace Jointure
 
             if (toggleGrabs)
             {
-                foreach (Grab grab in EnableGrabs)
+                if (EnableGrabs != null)
                 {
-                    if (grab)
-                        grab.enabled = false;
+                    foreach (Grab grab in EnableGrabs)
+                    {
+                        if (grab)
+                            grab.enabled = false;
+                    }
                 }
-                foreach (Grab grab in DisableGrabs)
+                if (DisableGrabs != null)
                 {
-                    if (grab)
-                        grab.enabled = true;
+                    foreach (Grab grab in DisableGrabs)
+                    {
+                        if (grab)
+                            grab.enabled = true;
+                    }
                 }
             }
 
