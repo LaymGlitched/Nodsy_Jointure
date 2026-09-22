@@ -403,6 +403,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a88f7fc0c80d1cd4c9436555901239a5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  HideHeadInFirstPerson: 1
+  _headBone: {fileID: 7731036038874154304}
+  _thirdPersonCamera: {fileID: 8579998657378195073}
 --- !u!1 &624914813856286805
 GameObject:
   m_ObjectHideFlags: 0

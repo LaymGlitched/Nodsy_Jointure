@@ -681,9 +681,14 @@ namespace Jointure
 
             // Ensure Head.cs is present on HeadIK
             Transform headIKTransform = rigSetup.transform.Find("IK/HeadIK");
-            if (headIKTransform != null && headIKTransform.GetComponent<Head>() == null)
+            if (headIKTransform != null)
             {
-                headIKTransform.gameObject.AddComponent<Head>();
+                var headComp = headIKTransform.GetComponent<Head>();
+                if (headComp == null)
+                {
+                    headComp = headIKTransform.gameObject.AddComponent<Head>();
+                }
+                headComp.HeadBone = animator.GetBoneTransform(HumanBodyBones.Head);
             }
 
             // 6. Chest IK
