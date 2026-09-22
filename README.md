@@ -6,7 +6,7 @@
 
 **A full-body physics interaction system inspired by Boneworks/Bonelab.**
 
-Nodsy_Jointure brings physically simulated bodies, joints, and grabbable objects to life — no animation tricks, no fake IK, just real physics driving every interaction. Every limb, joint, and object behaves according to actual physical constraints, creating emergent, unpredictable, and satisfying interactions.
+Nodsy_Jointure brings physically simulated bodies, joints, and grabbable objects to life, just real physics driving every interaction. Every limb, joint, and object behaves according to actual physical constraints, creating emergent, unpredictable, and satisfying interactions.
 
 ## Features
 
