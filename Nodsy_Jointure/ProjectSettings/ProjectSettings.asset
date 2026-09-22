@@ -3,7 +3,8 @@
 --- !u!129 &1
 PlayerSettings:
   m_ObjectHideFlags: 0
-  serializedVersion: 29
+  m_BuildProfilePlayerSettings: {fileID: 0}
+  serializedVersion: 32
   productGUID: a417da352416f5f47a46f34e6f3dc4c8
   AndroidProfiler: 0
   AndroidFilterTouchesWhenObscured: 0
@@ -45,6 +46,7 @@ PlayerSettings:
   defaultScreenHeight: 768
   defaultScreenWidthWeb: 960
   defaultScreenHeightWeb: 600
+  webProgressiveAssetLoading: 0
   m_StereoRenderingPath: 0
   m_ActiveColorSpace: 1
   unsupportedMSAAFallback: 0
@@ -54,7 +56,7 @@ PlayerSettings:
   mipStripping: 0
   numberOfMipsStripped: 0
   numberOfMipsStrippedPerMipmapLimitGroup: {}
-  m_StackTraceTypes: 010000000100000001000000010000000100000001000000
+  m_StackTraceTypes: 010000000100000001000000010000000100000001000000i
   iosShowActivityIndicatorOnLoading: -1
   androidShowActivityIndicatorOnLoading: -1
   iosUseCustomAppBackgroundBehavior: 0
@@ -88,6 +90,7 @@ PlayerSettings:
   defaultIsNativeResolution: 1
   macRetinaSupport: 1
   runInBackground: 0
+  callOnDisableOnAssetBundleUnload: 1
   muteOtherAudioSources: 0
   Prepare IOS For Recording: 0
   Force IOS Speakers When Recording: 0
@@ -161,7 +164,7 @@ PlayerSettings:
   allowHDRDisplaySupport: 0
   useHDRDisplay: 0
   hdrBitDepth: 0
-  m_ColorGamuts: 00000000
+  m_ColorGamuts: 00000000i
   targetPixelDensity: 30
   resolutionScalingMode: 0
   resetResolutionOnWindowResize: 0
@@ -257,7 +260,6 @@ PlayerSettings:
   VisionOSManualSigningProvisioningProfileType: 0
   appleEnableAutomaticSigning: 0
   iOSRequireARKit: 0
-  iOSAutomaticallyDetectAndAddCapabilities: 1
   appleEnableProMotion: 0
   shaderPrecisionModel: 0
   clonedFromGUID: 3c72c65a16f0acb438eed22b8b16c24a
@@ -431,64 +433,29 @@ PlayerSettings:
       m_Kind: 2
       m_SubKind: 
     - m_Textures: []
-      m_Width: 192
-      m_Height: 192
-      m_Kind: 1
+      m_Width: 640
+      m_Height: 360
+      m_Kind: 3
       m_SubKind: 
     - m_Textures: []
-      m_Width: 144
-      m_Height: 144
-      m_Kind: 1
+      m_Width: 480
+      m_Height: 270
+      m_Kind: 3
       m_SubKind: 
     - m_Textures: []
-      m_Width: 96
-      m_Height: 96
-      m_Kind: 1
+      m_Width: 320
+      m_Height: 180
+      m_Kind: 3
       m_SubKind: 
     - m_Textures: []
-      m_Width: 72
-      m_Height: 72
-      m_Kind: 1
+      m_Width: 240
+      m_Height: 135
+      m_Kind: 3
       m_SubKind: 
     - m_Textures: []
-      m_Width: 48
-      m_Height: 48
-      m_Kind: 1
-      m_SubKind: 
-    - m_Textures: []
-      m_Width: 36
-      m_Height: 36
-      m_Kind: 1
-      m_SubKind: 
-    - m_Textures: []
-      m_Width: 192
-      m_Height: 192
-      m_Kind: 0
-      m_SubKind: 
-    - m_Textures: []
-      m_Width: 144
-      m_Height: 144
-      m_Kind: 0
-      m_SubKind: 
-    - m_Textures: []
-      m_Width: 96
-      m_Height: 96
-      m_Kind: 0
-      m_SubKind: 
-    - m_Textures: []
-      m_Width: 72
-      m_Height: 72
-      m_Kind: 0
-      m_SubKind: 
-    - m_Textures: []
-      m_Width: 48
-      m_Height: 48
-      m_Kind: 0
-      m_SubKind: 
-    - m_Textures: []
-      m_Width: 36
-      m_Height: 36
-      m_Kind: 0
+      m_Width: 160
+      m_Height: 90
+      m_Kind: 3
       m_SubKind: 
   - m_BuildTarget: tvOS
     m_Icons:
@@ -533,10 +500,10 @@ PlayerSettings:
   m_BuildTargetGraphicsJobMode: []
   m_BuildTargetGraphicsAPIs:
   - m_BuildTarget: iOSSupport
-    m_APIs: 10000000
+    m_APIs: 10000000i
     m_Automatic: 1
   - m_BuildTarget: AndroidPlayer
-    m_APIs: 150000000b000000
+    m_APIs: 150000000b000000i
     m_Automatic: 0
   m_DefaultShaderChunkSizeInMB: 16
   m_DefaultShaderChunkCount: 0
@@ -561,7 +528,7 @@ PlayerSettings:
   m_BuildTargetDefaultTextureCompressionFormat:
   - serializedVersion: 3
     m_BuildTarget: Android
-    m_Formats: 03000000
+    m_Formats: 03000000i
   playModeTestRunnerEnabled: 0
   runPlayModeTestAsEditModeTest: 0
   actionOnDotNetUnhandledException: 1
@@ -848,10 +815,12 @@ PlayerSettings:
   scriptingRuntimeVersion: 1
   gcIncremental: 1
   gcWBarrierValidation: 0
+  managedCodeVariant: {}
   apiCompatibilityLevelPerPlatform: {}
   editorAssembliesCompatibilityLevel: 1
   m_RenderingPath: 1
   m_MobileRenderingPath: 1
+  windowsCopyVCRuntime: 1
   metroPackageName: Nodsy_Jointure
   metroPackageVersion: 
   metroCertificatePath: 
@@ -945,4 +914,5 @@ PlayerSettings:
   androidVulkanAllowFilterList: []
   androidVulkanDeviceFilterListAsset: {fileID: 0}
   d3d12DeviceFilterListAsset: {fileID: 0}
+  webGPUDeviceFilterListAsset: {fileID: 0}
   allowedHttpConnections: 3
