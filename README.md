@@ -22,4 +22,4 @@ Most physics interaction systems fake it — canned animations, snapped-in-place
 
 ## Status
 
-🚧 Actively in development — core joint and grab systems functional, more features on the way.
+Actively in development — core joint and grab systems functional, more features on the way.
